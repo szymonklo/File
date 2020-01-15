@@ -34,30 +34,76 @@ namespace File
             var pointList = new List<Point>();
             var l = pointList;
 
+            int counter = 0;
+            string type = "";
+
             for (int i = 0; i<f.Length; i++)
             {
-                string type = "";
+                if (type == "ele")
+                {
+                    string ele = "";
+                    for (; f[i] != '<'; i++)
+                    {
+                        ele += f[i];
+                    }
+                    Console.WriteLine(ele);
+                    Console.ReadKey();
+                }
                 if (f[i]=='<')
                 {
                     type = "";// new string (f[i],1);
-                    for (i++;f[i]!='>';i++)
+                    for (i++; (f[i] != '>')/*&&( f[i] != ' ')*/; i++)
                     {
-                        type += f[i];
-                        if (type == "trkpt lat=\"")
+                        if (type == "trkpt")
                         {
                             string lat = "";
-                            for (i++; f[i] != '"'; i++)
+                            string lon = "";
+                            
+                            for (i++; f[i] != '>'; i++)
                             {
-                                lat += f[i];
+                                if (f[i] == 'l')
+                                {
+                                    string subtype = "";
+                                    for (; f[i] != '>'; i++)
+                                    {
+                                        if (subtype == "lat=")
+                                        {
+                                            for (i++; f[i] != '"'; i++)
+                                            {
+                                                lat += f[i];
+                                            }
+                                            Console.WriteLine(lat);
+                                            break;
+                                        }
+                                        if (subtype == "lon=")
+                                        {
+                                            for (i++; f[i] != '"'; i++)
+                                            {
+                                                lon += f[i];
+                                            }
+                                            Console.WriteLine(lon);
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            subtype += f[i];
+                                        }
+                                    }
+                                }
                             }
-                            l.Add (new Point());
+                            i--;
+                            l.Add(new Point());
                             //l[j].Lat = Convert.ToDouble(lat);
-                            l[j].Lat = Double.Parse(lat, System.Globalization.CultureInfo.InvariantCulture);
-                            Console.WriteLine(l[j].Lat);
+                            //l[j].Lat = Double.Parse(lat, System.Globalization.CultureInfo.InvariantCulture);
+                            //Console.WriteLine(l[j].Lat);
+                            //i++;
+
+                        }
+                        else
+                        {
+                            type += f[i];
                         }
                     }
-                    Console.WriteLine(type);
-                    Console.ReadKey();
                 }
             }
 
