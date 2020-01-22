@@ -17,6 +17,9 @@ namespace File
 
         public double Section { get; set; }
 
+        public string Name { get; set; }
+
+
         const double PIx = 3.141592653589793;
         const double RADIUS = 6378.16;
 
